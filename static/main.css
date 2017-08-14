@@ -1,0 +1,43 @@
+html, body {
+  font-family: Arial, sans-serif;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.pink {
+  color: #F96365;
+}
+
+.blue {
+  color: #569AF8;
+}
+
+#map-wrapper {
+  position: relative;
+}
+
+#map {
+  height: 100%;
+  /*z-index: -1;*/
+  position: relative;
+}
+
+aside {
+  position: absolute;
+  background-color: white;
+  border-radius: 5px;
+  min-height: 85%;
+  top: 5%;
+  left: 5%;
+  bottom: 10%;
+  z-index: 1000010;
+  box-shadow: 3px 6px 24px 5px rgba(68,68,68,0.66);
+  cursor: default;
+  /*pointer-events: none;*/
+}
+
+#logo {
+  max-width: 400px;
+  background: cover;
+}
