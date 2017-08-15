@@ -55,4 +55,30 @@ function initMap() {
     // scrollwheel: false
   });
   map.mapTypes.set('styled_map', mapStyle);
+
+  var largeInfoWindow = new google.maps.InfoWindow();
+
+  markers.forEach(function(data){
+    var marker = new google.maps.Marker({
+      map: map,
+      position: data.latLng,
+      title: data.place,
+      animation: google.maps.Animation.DROP,
+      icon: ('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')
+    });
+    marker.addListener('click', function(){
+      populateInfoWindow(this, largeInfoWindow);
+  });
+ });
+
+  function populateInfoWindow(marker, infoWindow){
+    if (infoWindow != marker){
+      infoWindow.setContent(marker.title);
+      infoWindow.marker = marker;
+      infoWindow.open(map, marker);
+      infoWindow.addListener('closeclick', function(){
+        infoWindow.marker = null;
+      });
+    }
+  }
 }

@@ -11,14 +11,16 @@
     <aside id="sidebar">
       <img id="logo" src="{{url_for('static', filename='city_map_logo.png')}}" />
       <div class="dropdown">
-        <button class="dropbtn">Testing</button>
+        <button class="dropbtn" data-bind="text: selection"></button>
         <div class="dropdown-content">
           <ul id="filter-options" data-bind="foreach: stopTypeList">
-            <li id="filter-option" data-bind="text: name"></li>
+            <!-- ko if: $parent.selection() !== $data -->
+            <li id="filter-option" data-bind="text: $data, click: $parent.changeSelection"></li>
+            <!-- /ko -->
           </ul>
         </div>
       </div>
-      <ul id="stop-list" data-bind="foreach: markerList">
+      <ul id="stop-list" data-bind="foreach: activeMarkerList">
         <li data-bind="text: place"></li>
       </ul>
     </aside>

@@ -2,26 +2,31 @@ var markers = [
   {
     place: "Westfield, Stratford City",
     type: "Shopping Centre",
+    latLng: {lat: 51.5431462, lng: -0.0094241},
     selected: true
   },
   {
     place: "Westfield, Sheperd's Bush",
     type: "Shopping Centre",
+    latLng: {lat: 51.5072009, lng: -0.2234408},
     selected: true
   },
   {
     place: "Big Ben",
     type: "Landmark",
+    latLng: {lat: 51.5007292, lng: -0.1268141},
     selected: true
   },
   {
     place: "Tower Bridge",
     type: "Landmark",
+    latLng: {lat: 51.5055111, lng: -0.0775479},
     selected: true
   },
   {
     place: "Bengal Clipper London",
     type: "Restaurant",
+    latLng: {lat: 51.5026788, lng: -0.0733441},
     selected: true
   },
 ]
@@ -32,47 +37,50 @@ function Marker(data){
   this.selected = ko.observable(data.selected);
 }
 
-var stopTypes = [
-  {name: "All"},
-  {name: "Shopping Centre"},
-  {name: "Landmark"},
-  {name: "Restaurant"}
-]
-
-function StopType(data){
-  this.name = data.name;
-}
+// var stopTypes = [
+//   {name: "All"},
+//   {name: "Shopping Centre"},
+//   {name: "Landmark"},
+//   {name: "Restaurant"}
+// ]
+//
+// function StopType(data){
+//   this.name = data.name;
+// }
 
 function ViewModel(){
   var self = this;
 
+  this.selection = ko.observable("All");
+
   this.markerList = ko.observableArray([]);
-  // this.activeMarkerList = ko.observableArray([]);
 
-  this.stopTypeList = ko.observableArray([]);
+  this.stopTypeList = ko.observableArray(["All", "Shopping Centre", "Landmark", "Restaurant"]);
 
-  stopTypes.forEach(function(data){
-    self.stopTypeList.push(new StopType(data));
-  })
   console.log(this.stopTypeList());
 
   markers.forEach(function(data){
     self.markerList.push(new Marker(data));
-  })
+  });
 
-  this.changeSelection = function(type){
-    if (type === "All"){
-      this.selected = true;
+  this.activeMarkerList = ko.computed(function(){
+    if(self.selection() === "All"){
+      return self.markerList();
     }
-    else{
-      if(type === this.type){
-        this.selected = true;
-      }
-      else{
-        this.selected = false;
-      }
+    else {
+      var newList = [];
+      markers.forEach(function(data){
+        if(data.type === self.selection()){
+          newList.push(new Marker(data));
+        }
+      })
+      return newList;
     }
-  }
+  });
+
+  this.changeSelection = function(newSelection){
+    self.selection(newSelection);
+  };
 };
 
 ko.applyBindings(new ViewModel());
