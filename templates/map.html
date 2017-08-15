@@ -10,62 +10,22 @@
     </div>
     <aside id="sidebar">
       <img id="logo" src="{{url_for('static', filename='city_map_logo.png')}}" />
-      <!-- <p>
-        something
-      </p> -->
+      <div class="dropdown">
+        <button class="dropbtn">Testing</button>
+        <div class="dropdown-content">
+          <ul id="filter-options" data-bind="foreach: stopTypeList">
+            <li id="filter-option" data-bind="text: name"></li>
+          </ul>
+        </div>
+      </div>
+      <ul id="stop-list" data-bind="foreach: markerList">
+        <li data-bind="text: place"></li>
+      </ul>
     </aside>
   </div>
-  <script>
-  var map;
-  function initMap() {
-
-    var mapStyle = new google.maps.StyledMapType(
-      [
-        {
-        "featureType": "water",
-        "elementType": "all",
-        "stylers": [
-            {
-                "visibility": "on"
-            },
-            {
-                "color": "#569AF8"
-            },
-            {
-                "lightness": "2"
-            }
-        ]
-    },
-    {
-      "featureType": "road",
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#F96365"
-        }
-      ]
-    },
-    {
-      "featureType": "poi",
-      "elementType": "all",
-      "stylers": [
-        {
-          "visibility": "off"
-        }
-      ]
-    }
-  ], {name: 'City Map'}
-    );
-    map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: 51.5074, lng: -0.1278},
-      zoom: 12,
-      mapTypeControl: false,
-      mapTypeId: 'styled_map',
-      // scrollwheel: false
-    });
-    map.mapTypes.set('styled_map', mapStyle);
-  }
-  </script>
+  <script src="{{url_for('static', filename='knockout-3.2.0.js' )}}"></script>
+  <script src="{{url_for('static', filename='app.js')}}"></script>
+  <script src="{{url_for('static', filename='map.js')}}"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByn9zMoXOQDzWMbCVG986aQ6Op9Tp-gC8&v=3&callback=initMap"></script>
 </body>
 </html>
