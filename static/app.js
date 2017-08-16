@@ -1,3 +1,5 @@
+// TODO Sort out variable names markers, place/title
+
 var markers = [
   {
     place: "Westfield, Stratford City",
@@ -80,6 +82,28 @@ function ViewModel(){
 
   this.changeSelection = function(newSelection){
     self.selection(newSelection);
+    mapMarkers.forEach(function(data){
+      if(data.type !== self.selection()){
+        data.setMap(null);
+      }
+      else {
+        data.setMap(map);
+      }
+    });
+  };
+  this.showInfo = function(data){
+    var marker;
+    mapMarkers.forEach(function(markerData){
+      if(markerData.title === data.place){
+        marker = markerData;
+      }
+    });
+    console.log(marker.title);
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+    populateInfoWindow(marker, largeInfoWindow);
+    setTimeout(function(){
+      marker.setAnimation(null);
+    }, 750);
   };
 };
 

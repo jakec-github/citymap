@@ -107,3 +107,29 @@ aside {
 .dropdown:hover .dropbtn {
     background-color: #569AF8;
 }
+
+#stop-list {
+  list-style: none;
+  padding: 5px 1px 5px 1px;
+}
+
+.stop {
+  padding: 12px 5px;
+  background-color: #EEEEEE;
+  border-bottom: 2px solid #444444;
+  color: #666666;
+  cursor: pointer;
+}
+
+.stop:hover {
+  font-size: 20px;
+  color: white;
+}
+
+.stop:nth-child(even):hover {
+  background-color: #569AF8;
+}
+
+.stop:nth-child(odd):hover {
+  background-color: #F96365;
+}
