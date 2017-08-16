@@ -6,13 +6,13 @@ initialCenter = {lat: 51.5074, lng: -0.1278};
 var largeInfoWindow;
 
 function recenterMap(latLng){
-  latLng.lng -= 0.028;
+  latLng.lng -= 0.05;
   return latLng;
 }
 
 function populateInfoWindow(marker, infoWindow){
   if (infoWindow != marker){
-    infoWindow.setContent('');
+    infoWindow.setContent('<div>' + marker.title + '</div>');
     getFourSquarePhoto(marker, infoWindow);
     infoWindow.marker = marker;
     infoWindow.open(map, marker);
@@ -22,12 +22,11 @@ function populateInfoWindow(marker, infoWindow){
   }
 }
 
-var fourSquareTimeout = setTimeout(function(){
-  //Do something useful here..
-  console.log("FourSquare timeout")
-}, 8000);
-
 function getFourSquarePhoto(marker, infoWindow){
+  var fourSquareTimeout = setTimeout(function(){
+    console.log("FourSquare timeout");
+    infoWindow.setContent(infoWindow.getContent() + '<p>No Photo Available</p>');
+  }, 8000);
   position = marker.getPosition().toUrlValue();
   url = 'http://api.foursquare.com/v2/venues/search?ll=';
   url += position;
@@ -48,7 +47,8 @@ function getFourSquarePhoto(marker, infoWindow){
           imgUrl = response.response.photos.items[0].prefix;
           imgUrl += "150x150";
           imgUrl += response.response.photos.items[0].suffix;
-          infoWindow.setContent('<div>' + marker.title + '</div><img src="' + imgUrl + '">');
+          infoWindow.setContent(infoWindow.getContent() + '<img src="' + imgUrl + '">');
+          clearTimeout(fourSquareTimeout);
         }
       });
     }
