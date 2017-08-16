@@ -1,5 +1,5 @@
-// TODO Separate out tokens/secrets
-// TODO Check all quotation marks. Some should be apostrophes
+const FOURSQUARE_CLIENT_ID = "2YYXN2WBQXGN2DXBR44B4O232RSQNS0FNXEWCJG4C02RY0C0";
+const FOURSQUARE_CLIENT_SECRET = "BFDLM5IG313AEAQFSNLNSKMXBIXDBL34Z3TMV1QR3ZSQU4NF";
 
 initialCenter = {lat: 51.5074, lng: -0.1278};
 
@@ -24,35 +24,41 @@ function populateInfoWindow(marker, infoWindow){
 
 function getFourSquarePhoto(marker, infoWindow){
   var fourSquareTimeout = setTimeout(function(){
-    console.log("FourSquare timeout");
     infoWindow.setContent(infoWindow.getContent() + '<p>No Photo Available</p>');
   }, 8000);
   position = marker.getPosition().toUrlValue();
-  url = 'http://api.foursquare.com/v2/venues/search?ll=';
+  url = 'https://api.foursquare.com/v2/venues/search?ll=';
   url += position;
-  url += "&client_id=2YYXN2WBQXGN2DXBR44B4O232RSQNS0FNXEWCJG4C02RY0C0&client_secret=BFDLM5IG313AEAQFSNLNSKMXBIXDBL34Z3TMV1QR3ZSQU4NF&v=20170707&query=";
+  url += '&client_id=';
+  url += FOURSQUARE_CLIENT_ID;
+  url += '&client_secret=';
+  url += FOURSQUARE_CLIENT_SECRET;
+  url += '&v=20170707&query=';
   url += marker.title.replace(/ /g, '+');
   $.ajax({
     url: url,
-    dataType: "json",
+    dataType: 'json',
     success: function(response){
       id = response.response.venues[0].id;
-      url = "http://api.foursquare.com/v2/venues/";
+      url = 'https://api.foursquare.com/v2/venues/';
       url += id;
-      url += '/photos?client_id=2YYXN2WBQXGN2DXBR44B4O232RSQNS0FNXEWCJG4C02RY0C0&client_secret=BFDLM5IG313AEAQFSNLNSKMXBIXDBL34Z3TMV1QR3ZSQU4NF&v=20170707&limit=1';
+      url += '/photos?client_id=';
+      url += FOURSQUARE_CLIENT_ID;
+      url += '&client_secret=';
+      url += FOURSQUARE_CLIENT_SECRET;
+      url += '&v=20170707&limit=1';
       $.ajax({
         url: url,
-        dataType: "json",
+        dataType: 'json',
         success: function(response){
           imgUrl = response.response.photos.items[0].prefix;
-          imgUrl += "150x150";
+          imgUrl += '150x150';
           imgUrl += response.response.photos.items[0].suffix;
           infoWindow.setContent(infoWindow.getContent() + '<img src="' + imgUrl + '">');
           clearTimeout(fourSquareTimeout);
         }
       });
     }
-    // clearTimeout(fourSquareTimeout);
   });
 
 };
@@ -68,35 +74,35 @@ function initMap() {
   var mapStyle = new google.maps.StyledMapType(
     [
       {
-      "featureType": "water",
-      "elementType": "all",
-      "stylers": [
+      'featureType': 'water',
+      'elementType': 'all',
+      'stylers': [
           {
-              "visibility": "on"
+              'visibility': 'on'
           },
           {
-              "color": "#569AF8"
+              'color': '#569AF8'
           },
           {
-              "lightness": "2"
+              'lightness': '2'
           }
       ]
   },
   {
-    "featureType": "road",
-    "elementType": "geometry",
-    "stylers": [
+    'featureType': 'road',
+    'elementType': 'geometry',
+    'stylers': [
       {
-        "color": "#F96365"
+        'color': '#F96365'
       }
     ]
   },
   {
-    "featureType": "poi",
-    "elementType": "all",
-    "stylers": [
+    'featureType': 'poi',
+    'elementType': 'all',
+    'stylers': [
       {
-        "visibility": "off"
+        'visibility': 'off'
       }
     ]
   }
@@ -113,7 +119,7 @@ function initMap() {
 
   largeInfoWindow = new google.maps.InfoWindow();
 
-  markers.forEach(function(data){
+  places.forEach(function(data){
     var marker = new google.maps.Marker({
       map: map,
       position: data.latLng,
