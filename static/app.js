@@ -1,4 +1,5 @@
-var places = [
+// Array of locations
+let places = [
   {
     title: 'Westfield, Stratford City',
     type: 'Shopping Centre',
@@ -79,6 +80,7 @@ var places = [
   }
 ]
 
+// Creates the Place class including observable from the places array
 function Place(data){
   this.title = data.title;
   this.type = data.type;
@@ -86,26 +88,37 @@ function Place(data){
 }
 
 function ViewModel(){
-  var self = this;
+  let self = this;
 
-  this.selection = ko.observable('All');
+  // Controls the filter. Initiaised to 'All' or result in localStorage
+  if (localStorage.getItem("selection")){
+    this.selection = ko.observable(localStorage.getItem("selection"));
+  }
+  else {
+    this.selection = ko.observable('All');
+  }
 
+  // Stores all the places in an observable Array
   this.markerList = ko.observableArray([]);
-
-  this.stopTypeList = ko.observableArray(['All', 'Shopping Centre', 'Landmark', 'Restaurant']);
-
-  console.log(this.stopTypeList());
-
   places.forEach(function(data){
     self.markerList.push(new Place(data));
   });
 
+  // Stores all the filters in an observable Array
+  this.stopTypeList = ko.observableArray([
+    'All',
+    'Shopping Centre',
+    'Landmark',
+    'Restaurant'
+  ]);
+
+  //Computes which places should be shown when the filter is used
   this.activeMarkerList = ko.computed(function(){
     if(self.selection() === 'All'){
       return self.markerList();
     }
     else {
-      var newList = [];
+      let newList = [];
       places.forEach(function(data){
         if(data.type === self.selection()){
           newList.push(new Place(data));
@@ -115,6 +128,7 @@ function ViewModel(){
     }
   });
 
+  // Changes the selection and adjusts map markers
   this.changeSelection = function(newSelection){
     self.selection(newSelection);
     if(self.selection() === 'All'){
@@ -122,7 +136,7 @@ function ViewModel(){
         data.setMap(map);
       });
     }
-    else{
+    else {
       mapMarkers.forEach(function(data){
         if(data.type !== self.selection()){
           data.setMap(null);
@@ -132,22 +146,29 @@ function ViewModel(){
         }
       });
     }
+
+    // Stores the selection
+    localStorage.setItem("selection", self.selection());
   };
+
+  // Opens the info window when an item is clicked in the list
   this.showInfo = function(data){
-    var marker;
+    let marker;
     mapMarkers.forEach(function(markerCheck){
       if(markerCheck.title === data.title){
         marker = markerCheck;
       }
     });
+
+    // Places selected marker in the centre of the map
     map.setCenter(recenterMap(marker.getPosition().toJSON()));
-    console.log(marker.title);
+
     marker.setAnimation(google.maps.Animation.BOUNCE);
     populateInfoWindow(marker, largeInfoWindow);
     setTimeout(function(){
       marker.setAnimation(null);
     }, 750);
   };
-};
+}
 
 ko.applyBindings(new ViewModel());

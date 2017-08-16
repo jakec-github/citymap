@@ -1,15 +1,17 @@
 const FOURSQUARE_CLIENT_ID = "2YYXN2WBQXGN2DXBR44B4O232RSQNS0FNXEWCJG4C02RY0C0";
 const FOURSQUARE_CLIENT_SECRET = "BFDLM5IG313AEAQFSNLNSKMXBIXDBL34Z3TMV1QR3ZSQU4NF";
+const INITIAL_CENTER = {lat: 51.5074, lng: -0.1278};
 
-initialCenter = {lat: 51.5074, lng: -0.1278};
+// Defines infoWindow outside initMap so that it can be accessed in ViewModel
+let largeInfoWindow;
 
-var largeInfoWindow;
-
+// Compensates for floating sidebar
 function recenterMap(latLng){
   latLng.lng -= 0.05;
   return latLng;
 }
 
+// Creates an infoWindow for the marker including photo
 function populateInfoWindow(marker, infoWindow){
   if (infoWindow != marker){
     infoWindow.setContent('<div>' + marker.title + '</div>');
@@ -22,8 +24,11 @@ function populateInfoWindow(marker, infoWindow){
   }
 }
 
+// Uses ajax calls to the Foursquare API to get a photo from each location
 function getFourSquarePhoto(marker, infoWindow){
-  var fourSquareTimeout = setTimeout(function(){
+
+  //Uses the marker title and latLng to identify the venue on Foursquare
+  let fourSquareTimeout = setTimeout(function(){
     infoWindow.setContent(infoWindow.getContent() + '<p>No Photo Available</p>');
   }, 8000);
   position = marker.getPosition().toUrlValue();
@@ -35,6 +40,8 @@ function getFourSquarePhoto(marker, infoWindow){
   url += FOURSQUARE_CLIENT_SECRET;
   url += '&v=20170707&query=';
   url += marker.title.replace(/ /g, '+');
+
+  // First call gets the 'venue id'
   $.ajax({
     url: url,
     dataType: 'json',
@@ -47,6 +54,8 @@ function getFourSquarePhoto(marker, infoWindow){
       url += '&client_secret=';
       url += FOURSQUARE_CLIENT_SECRET;
       url += '&v=20170707&limit=1';
+
+      //Second call uses the id to get the photo
       $.ajax({
         url: url,
         dataType: 'json',
@@ -61,17 +70,19 @@ function getFourSquarePhoto(marker, infoWindow){
     }
   });
 
-};
+}
 
-var map;
-var mapMarkers = [];
+// Defines the map and an array for the markers outside initMap
+let map;
+let mapMarkers = [];
 
 
 function initMap() {
 
-  var self = this;
+  let self = this;
 
-  var mapStyle = new google.maps.StyledMapType(
+  // Custom map style with modified colours
+  let mapStyle = new google.maps.StyledMapType(
     [
       {
       'featureType': 'water',
@@ -108,8 +119,10 @@ function initMap() {
   }
 ], {name: 'City Map'}
   );
+
+  // Defines map using INITIAL_CENTER and applies style
   map = new google.maps.Map(document.getElementById('map'), {
-    center: recenterMap(initialCenter),
+    center: recenterMap(INITIAL_CENTER),
     zoom: 12,
     mapTypeControl: false,
     mapTypeId: 'styled_map',
@@ -117,10 +130,12 @@ function initMap() {
   });
   map.mapTypes.set('styled_map', mapStyle);
 
+  // Assigns InfoWindow class to largeInfoWindow
   largeInfoWindow = new google.maps.InfoWindow();
 
+  // Creates markers for each location
   places.forEach(function(data){
-    var marker = new google.maps.Marker({
+    let marker = new google.maps.Marker({
       map: map,
       position: data.latLng,
       title: data.title,
@@ -130,9 +145,6 @@ function initMap() {
     });
     marker.addListener('click', function(){
       populateInfoWindow(this, largeInfoWindow);
-    });
-    marker.addListener('click', function(){
-      marker.setAnimation(null);
     });
   mapMarkers.push(marker);
   });
