@@ -117,7 +117,7 @@ function initMap() {
     var marker = new google.maps.Marker({
       map: map,
       position: data.latLng,
-      title: data.place,
+      title: data.title,
       type: data.type,
       animation: google.maps.Animation.DROP,
       icon: ('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')
