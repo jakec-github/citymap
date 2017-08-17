@@ -78,7 +78,7 @@ let places = [
     latLng: {lat: 51.5340176, lng: -0.109621},
     selected: true
   }
-]
+];
 
 // Creates the Place class including observable from the places array
 function Place(data){
@@ -123,7 +123,7 @@ function ViewModel(){
         if(data.type === self.selection()){
           newList.push(new Place(data));
         }
-      })
+      });
       return newList;
     }
   });
