@@ -14,7 +14,7 @@
     </div>
     <aside id="sidebar">
       <img id="logo" src="{{url_for('static', filename='city_map_logo.png')}}" />
-      <div class="dropdown">
+      <div class="dropdown" id="error-insert">
         <button class="dropbtn" data-bind="text: selection"></button>
         <div class="dropdown-content">
           <ul id="filter-options" data-bind="foreach: stopTypeList">
@@ -32,10 +32,10 @@
       </p>
     </aside>
   </div>
+  <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByn9zMoXOQDzWMbCVG986aQ6Op9Tp-gC8&v=3&callback=initMap" onerror="noMap()"></script>
   <script src="{{url_for('static', filename='jquery.min.js')}}"></script>
   <script src="{{url_for('static', filename='knockout-3.2.0.js' )}}"></script>
   <script src="{{url_for('static', filename='map.js')}}"></script>
   <script src="{{url_for('static', filename='app.js')}}"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByn9zMoXOQDzWMbCVG986aQ6Op9Tp-gC8&v=3&callback=initMap"></script>
 </body>
 </html>
