@@ -161,7 +161,7 @@ function ViewModel(){
     });
 
     // Places selected marker in the centre of the map
-    map.setCenter(recenterMap(marker.getPosition().toJSON()));
+    map.panTo(recenterMap(marker.getPosition().toJSON()));
 
     marker.setAnimation(google.maps.Animation.BOUNCE);
     populateInfoWindow(marker, largeInfoWindow);

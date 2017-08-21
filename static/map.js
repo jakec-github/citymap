@@ -149,6 +149,7 @@ function initMap() {
     });
     marker.addListener('click', function(){
       populateInfoWindow(this, largeInfoWindow);
+      map.panTo(recenterMap(marker.getPosition().toJSON()));
     });
   mapMarkers.push(marker);
   });
