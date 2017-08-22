@@ -27,11 +27,6 @@ function populateInfoWindow(marker, infoWindow){
 // Uses ajax calls to the Foursquare API to get a photo from each location
 function getFourSquarePhoto(marker, infoWindow){
 
-  // Sets Timeout to display foursquare error message if no response
-  let fourSquareTimeout = setTimeout(function(){
-    infoWindow.setContent(infoWindow.getContent() + '<p>No Photo Available</p>');
-  }, 8000);
-
   // Uses the marker title and latLng to identify the venue on Foursquare
   position = marker.getPosition().toUrlValue();
   url = 'https://api.foursquare.com/v2/venues/search?ll=';
@@ -66,9 +61,10 @@ function getFourSquarePhoto(marker, infoWindow){
           imgUrl += '150x150';
           imgUrl += response.response.photos.items[0].suffix;
           infoWindow.setContent(infoWindow.getContent() + '<img src="' + imgUrl + '">');
-
-          // Prevents error message when response succeeds
-          clearTimeout(fourSquareTimeout);
+        },
+        error: function (jqXHR, exception) {
+          console.log("Failed");
+          infoWindow.setContent(infoWindow.getContent() + '<p>No Photo Available</p>');
         }
       });
     }

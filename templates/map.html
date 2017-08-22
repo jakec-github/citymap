@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}" />
 </head>
 <body>
-  <div id="map-wrapper">
+  <main id="map-wrapper">
     <div id="map">
 
     </div>
@@ -31,11 +31,11 @@
         Images courtesy of Foursquare.
       </p>
     </aside>
-  </div>
-  <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByn9zMoXOQDzWMbCVG986aQ6Op9Tp-gC8&v=3&callback=initMap" onerror="noMap()"></script>
+  </main>
   <script src="{{url_for('static', filename='jquery.min.js')}}"></script>
   <script src="{{url_for('static', filename='knockout-3.2.0.js' )}}"></script>
   <script src="{{url_for('static', filename='map.js')}}"></script>
   <script src="{{url_for('static', filename='app.js')}}"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByn9zMoXOQDzWMbCVG986aQ6Op9Tp-gC8&v=3&callback=initMap" onerror="noMap()"></script>
 </body>
 </html>
