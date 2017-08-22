@@ -110,6 +110,10 @@ function initMap() {
     marker.addListener('click', function(){
       populateInfoWindow(this, largeInfoWindow);
       map.panTo(recenterMap(marker.getPosition().toJSON()));
+      marker.setAnimation(google.maps.Animation.BOUNCE);
+      setTimeout(function(){
+        marker.setAnimation(null);
+      }, 750);
     });
   mapMarkers.push(marker);
   });
