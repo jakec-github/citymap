@@ -167,7 +167,7 @@ function ViewModel(){
     populateInfoWindow(marker, largeInfoWindow);
     setTimeout(function(){
       marker.setAnimation(null);
-    }, 750);
+    }, 700);
   };
 }
 
