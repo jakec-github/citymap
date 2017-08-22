@@ -133,16 +133,16 @@ function ViewModel(){
     self.selection(newSelection);
     if(self.selection() === 'All'){
       mapMarkers.forEach(function(data){
-        data.setMap(map);
+        data.setVisible(true);
       });
     }
     else {
       mapMarkers.forEach(function(data){
         if(data.type !== self.selection()){
-          data.setMap(null);
+          data.setVisible(false);
         }
         else {
-          data.setMap(map);
+          data.setVisible(true);
         }
       });
     }
