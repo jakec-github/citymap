@@ -1,0 +1,37 @@
+mapStyleData = [
+  {
+  "featureType": "water",
+  "elementType": "all",
+  "stylers": [
+      {
+          "visibility": "on"
+      },
+      {
+          "color": "#569AF8"
+      },
+      {
+          "lightness": "2"
+      }
+  ]
+},
+{
+"featureType": "road",
+"elementType": "geometry",
+"stylers": [
+  {
+    "color": "#F96365"
+  }
+]
+},
+{
+"featureType": "poi",
+"elementType": "all",
+"stylers": [
+  {
+    "visibility": "off"
+  }
+]
+}
+]
+
+mapStyleName = {"name": "City Map"}

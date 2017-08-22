@@ -82,43 +82,7 @@ function initMap() {
   let self = this;
 
   // Custom map style with modified colours
-  let mapStyle = new google.maps.StyledMapType(
-    [
-      {
-      'featureType': 'water',
-      'elementType': 'all',
-      'stylers': [
-          {
-              'visibility': 'on'
-          },
-          {
-              'color': '#569AF8'
-          },
-          {
-              'lightness': '2'
-          }
-      ]
-  },
-  {
-    'featureType': 'road',
-    'elementType': 'geometry',
-    'stylers': [
-      {
-        'color': '#F96365'
-      }
-    ]
-  },
-  {
-    'featureType': 'poi',
-    'elementType': 'all',
-    'stylers': [
-      {
-        'visibility': 'off'
-      }
-    ]
-  }
-], {name: 'City Map'}
-  );
+  let mapStyle = new google.maps.StyledMapType(mapStyleData, mapStyleName);
 
   // Defines map using INITIAL_CENTER and applies style
   map = new google.maps.Map(document.getElementById('map'), {
